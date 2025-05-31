@@ -51,4 +51,4 @@ El firmware está dividido en módulos claros:
 
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/tuusuario/comedero-acuario.git
+   git clone https://github.com/3despino-reef/spinofeeder
