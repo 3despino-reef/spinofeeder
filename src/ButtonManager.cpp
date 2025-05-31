@@ -8,7 +8,7 @@ byte numberLongClicks = 0;
 byte numberShortClicks = 0;
 extern String alarmSTemp;
 extern String alarmReadingSTemp;
-extern String lightMode; // auto, cycle, on
+extern String feederMode; // auto, cycle, on
 
 void setupButton (){
   button.begin();
