@@ -36,6 +36,7 @@ byte         feedHourFirst          = 0; //hora a la que ocurre la primera dosif
 byte         feedMinuteFirst        = 0; //minuto en el que ocurre la primera dosificación 
 byte         feedHourSecond         = 0; //hora a la que ocurre la segunda dosificación 
 byte         feedMinuteSecond       = 0; //minuto en el que ocure la segunda dosificación
+int          lastFeedingDay         = 0;
 boolean      feedFirstTimeEnabled   = true;
 boolean      feedSecondTimeEnabled  = true;
 byte         maxFeedings            = MAX_FEEDINGS; 
@@ -157,14 +158,15 @@ void setupPreferences() {
 
   // Verificar y establecer valores predeterminados si no existen
   if (!preferences.getBool("initialized", false)) {
-    preferences.putString("feederMode", "auto");
-    preferences.putInt("feedHourF", 14); //por si acaso hay algun error, ponemos las 14h como hora de dosificación 
-    preferences.putInt("feedMinuteF", 0);
-    preferences.putInt("feedHourS", 0);
-    preferences.putInt("feedMinuteS", 0);
-    preferences.putBool("Feed1Enabled", true); //por si acaso hay algun error, ponemos la primera dosificación en true 
-    preferences.putBool("Feed2Enabled", false);
-    preferences.putInt("totalFeedings", 0);
+    // preferences.putString("feederMode", "auto");
+    // preferences.putInt("feedHourF", 14); //por si acaso hay algun error, ponemos las 14h como hora de dosificación 
+    // preferences.putInt("feedMinuteF", 0);
+    // preferences.putInt("feedHourS", 0);
+    // preferences.putInt("feedMinuteS", 0);
+    // preferences.putBool("Feed1Enabled", true); //por si acaso hay algun error, ponemos la primera dosificación en true 
+    // preferences.putBool("Feed2Enabled", false);
+    // preferences.putInt("totalFeedings", 0);
+    preferences.putInt("lastFeedingDay", 0);  // 
     preferences.putBool("initialized", true);  // Marca como inicializado
   }
 
@@ -177,6 +179,7 @@ void setupPreferences() {
   feedFirstTimeEnabled = preferences.getBool("Feed1Enabled", true); //por si acaso hay algun error, ponemos la primera dosificación en true 
   feedSecondTimeEnabled= preferences.getBool("Feed2Enabled", false);
   totalFeedings        = preferences.getInt("totalFeedings", 0);
+  lastFeedingDay       = preferences.getInt("lastFeedingDay", 0);  // Guardamos el último dia de dosificación para evitar dosificaciones accidentales si se reinicia el equipo
 
   preferences.end();
 }
@@ -208,7 +211,18 @@ void loop() {
   wifiState = checkWiFi();
 
 
-  handleFeedingLogic(feederMode, feedFirstTimeEnabled, feedSecondTimeEnabled);
+
+  handleFeedingLogic(
+    feederMode, 
+    feedFirstTimeEnabled, 
+    feedSecondTimeEnabled, 
+    systemInTime, 
+    maxFeedings, 
+    feedHourFirst, 
+    feedMinuteFirst, 
+    feedHourSecond, 
+    feedMinuteSecond 
+  );
   processMenuNavigation();  
   checkTime();
   printStatus();

@@ -8,7 +8,7 @@ unsigned long lastFeedingMillis    = 0;
 // Flags de alimentación diaria
 boolean fedAtFirstTime  = false;
 boolean fedAtSecondTime = false;
-int lastFeedingDay       = 0;
+
 
 void setupFeederPins() {
   pinMode(NEMA_STEP_PIN, OUTPUT);
@@ -40,7 +40,7 @@ void performFeedingStep() {
 
 }
 
-void handleFeedingLogic(String feederMode, boolean feedFirstTimeEnabled, boolean feedSecondTimeEnabled) {
+void handleFeedingLogic(String feederMode, boolean feedFirstTimeEnabled, boolean feedSecondTimeEnabled, boolean systemInTime, byte maxFeedings, byte feedHourFirst, byte feedMinuteFirst, byte feedHourSecond, byte feedMinuteSecond) {
   // Reinicia los flags si cambia el día. Evitamos que se dosifique todo el rato hasta que cambia el minuto 
   if (lastFeedingDay != day) {
     fedAtFirstTime = false;
@@ -55,16 +55,14 @@ void handleFeedingLogic(String feederMode, boolean feedFirstTimeEnabled, boolean
 
   if (feederMode == "auto") {
     //primera dosificación 
-    if ((hour ==  feedHourFirst && minute ==  feedMinuteFirst) && !fedAtFirstTime && feedFirstTimeEnabled) {
+    if ((hour ==  feedHourFirst && minute ==  feedMinuteFirst) && !fedAtFirstTime && feedFirstTimeEnabled && systemInTime) {
       performFeedingStep();
       fedAtFirstTime = true;
-      updateTotalFeeding();
     }
     //segunda dosificación
-    if ((hour == feedHourSecond && minute == feedMinuteSecond) && !fedAtSecondTime && feedSecondTimeEnabled) {
+    if ((hour == feedHourSecond && minute == feedMinuteSecond) && !fedAtSecondTime && feedSecondTimeEnabled && systemInTime) {
       performFeedingStep();
       fedAtSecondTime = true;
-      updateTotalFeeding();
     }
   }
 
@@ -79,6 +77,7 @@ void updateTotalFeeding() {
   totalFeedings++;
   preferences.begin("datos", false);
   preferences.putInt("totalFeedings", totalFeedings);
+  preferences.putInt("lastFeedingDay", lastFeedingDay);
   preferences.end();
 
 }

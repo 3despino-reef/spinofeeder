@@ -9,8 +9,8 @@
 // Control de alimentación
 extern byte         totalFeedings; //traemos desde el main el número de dosificaciones que llevamos
 extern byte         maxFeedings;
-extern boolean      feedFirstTimeEnabled;
-extern boolean      feedSecondTimeEnabled;
+extern int          lastFeedingDay;
+extern byte         totalFeedings;
 
 // Hora y día actuales
 extern int          hour;
@@ -29,7 +29,7 @@ extern Preferences  preferences;
 // Funciones principales que exponemos 
 void setupFeederPins(); 
 void performFeedingStep();
-void handleFeedingLogic(String feederMode, boolean feedFirstTimeEnabled, boolean feedSecondTimeEnabled);
+void handleFeedingLogic(String feederMode, boolean feedFirstTimeEnabled, boolean feedSecondTimeEnabled, boolean systemInTime, byte maxFeedings, byte feedHourFirst, byte feedMinuteFirst, byte feedHourSecond, byte feedMinuteSecond);
 void manualFeed();
 void updateTotalFeeding();
 void resetTotalFeeding();
