@@ -158,14 +158,14 @@ void setupPreferences() {
 
   // Verificar y establecer valores predeterminados si no existen
   if (!preferences.getBool("initialized", false)) {
-    // preferences.putString("feederMode", "auto");
-    // preferences.putInt("feedHourF", 14); //por si acaso hay algun error, ponemos las 14h como hora de dosificación 
-    // preferences.putInt("feedMinuteF", 0);
-    // preferences.putInt("feedHourS", 0);
-    // preferences.putInt("feedMinuteS", 0);
-    // preferences.putBool("Feed1Enabled", true); //por si acaso hay algun error, ponemos la primera dosificación en true 
-    // preferences.putBool("Feed2Enabled", false);
-    // preferences.putInt("totalFeedings", 0);
+    preferences.putString("feederMode", "auto");
+    preferences.putInt("feedHourF", 14); //por si acaso hay algun error, ponemos las 14h como hora de dosificación 
+    preferences.putInt("feedMinuteF", 0);
+    preferences.putInt("feedHourS", 0);
+    preferences.putInt("feedMinuteS", 0);
+    preferences.putBool("Feed1Enabled", true); //por si acaso hay algun error, ponemos la primera dosificación en true 
+    preferences.putBool("Feed2Enabled", false);
+    preferences.putInt("totalFeedings", 0);
     preferences.putInt("lastFeedingDay", 0);  // 
     preferences.putBool("initialized", true);  // Marca como inicializado
   }
